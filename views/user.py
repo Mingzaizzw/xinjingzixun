@@ -10,10 +10,10 @@ def follow():
     action = request.json.get("action")
 
     # 提取到if前面，以便在if或者else中都可以使用
-    # 1.提取当前作者id
-    new_author_id = request.json.get("user_id")
+    # 1. 提取当前作者的id
+    news_author_id = request.json.get("user_id")
 
-    # 2.提取当前登录用户的id
+    # 2. 提取当前登录用户的id
     user_id = session.get("user_id")
 
     if action == "do":
@@ -55,13 +55,14 @@ def follow():
 
     else:
         # 取消关注
+
         try:
             follow = db.session.query(Follow).filter(Follow.followed_id == news_author_id, Follow.follower_id == user_id).first()
             db.session.delete(follow)
             db.session.commit()
 
             ret = {
-                "error": 0,
+                "errno": 0,
                 "errmsg": "取消关注成功"
             }
 
@@ -70,7 +71,7 @@ def follow():
         except Exception as ret:
             db.session.rollback()
             ret = {
-                "error": 3004,
+                "errno": 3004,
                 "errmsg": "取消关注失败..."
             }
 
