@@ -2,6 +2,7 @@ from flask import render_template, jsonify, request, session
 
 from models import db
 from models.index import News
+
 from . import index_blu
 
 
@@ -9,6 +10,7 @@ from . import index_blu
 def index():
     # 查询点击量最多的前6个新闻信息
     clicks_top_6_news = db.session.query(News).order_by(-News.clicks).limit(6)
+
     # 查询用户是否已经登录
     user_id = session.get("user_id", 0)
     nick_name = session.get("nick_name", "")
@@ -28,20 +30,17 @@ def category_news():
     # 2. 到数据库中查询数据
     # 如果cid是0，表示要看最新的，如果不是0则按照原来规则查询
     if cid == 0:
-        paginate = db.session.query(News).order_by(-News.clicks).paginate(page=int(page), per_page=int(per_page),
-                                                                          error_out=False)
+        paginate = db.session.query(News).order_by(-News.clicks).paginate(page=int(page), per_page=int(per_page), error_out=False)
     else:
         cid += 1  # 由于测试数据分类中从0开始，而数据库中是从1开始的，所以用户点击的1实际上是2
-        paginate = db.session.query(News).filter(News.category_id == cid).paginate(page=int(page),
-                                                                                   per_page=int(per_page),
-                                                                                   error_out=False)
+        paginate = db.session.query(News).filter(News.category_id == cid).paginate(page=int(page), per_page=int(per_page), error_out=False)
 
     # 3. 准备好要返回给浏览器的数据
     ret = {
         "totalPage": paginate.pages,  # 总页数
         "newsList": [news.to_dict() for news in paginate.items]
-
     }
+
     # 4. 将ret字典转换为json样子的字符串，返回
     return jsonify(ret)
 

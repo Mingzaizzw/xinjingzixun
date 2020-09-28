@@ -6,7 +6,7 @@ $(function(){
 	$('.login_btn').click(function(){
         $('.login_form_con').show();
 	})
-	
+
 	// 点击关闭按钮关闭登录框或者注册框
 	$('.shutoff').click(function(){
 		$(this).closest('form').hide();
@@ -110,6 +110,7 @@ $(function(){
             $("#login-password-err").show();
             return;
         }
+
         var params = {
             "mobile": mobile,
             "password": password,
@@ -133,8 +134,7 @@ $(function(){
     })
 
 
-
-    //注册按钮点击
+    // 注册按钮点击
     $(".register_form_con").submit(function (e) {
         // 阻止默认提交操作
         e.preventDefault();
@@ -145,7 +145,7 @@ $(function(){
         var smscode = $("#smscode").val();  // 提取短信验证码
         var password = $("#register_password").val();  // 提取密码
 
-		if (!mobile) {
+        if (!mobile) {
             $("#register-mobile-err").show();
             return;
         }
@@ -216,7 +216,7 @@ $(function(){
     })
 })
 
-var imageCodeId = ""
+
 
 // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
 function generateImageCode() {
@@ -228,7 +228,6 @@ function generateImageCode() {
     var imageCodeUrl = "/passport/image_code?code_id=" + imageCodeId;
     // 3. 设置页面中图片验证码img标签的src属性
     $(".get_pic_code").attr("src", imageCodeUrl)
-
 }
 
 // 发送短信验证码
@@ -336,6 +335,7 @@ function generateUUID() {
     });
     return uuid;
 }
+
 function logout() {
     $.ajax({
         url: "/passport/logout",

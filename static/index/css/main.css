@@ -239,14 +239,14 @@ body{
 .writings span,.follows span{
     display: block;
     font-size:12px;
-    color:#999;    
+    color:#999;
 }
 
 .writings b,.follows b{
     display: block;
     font-weight:normal;
     font-size:18px;
-    color:#333;    
+    color:#333;
 }
 
 .rank_title{

@@ -15,7 +15,15 @@ def register():
     smscode = request.json.get("smscode")
 
     # 2. 测试数据
-    # print(mobile, password, image_code, smscode)
+    print(mobile, password, image_code, smscode)
+
+    # 验证图片验证码是否争取
+    if session.get("image_code") != image_code:
+        ret = {
+            "errno": 1003,
+            "errmsg": "重新输入验证码"
+        }
+        return jsonify(ret)
 
     # 2. 创建一个新的用户
     # 2.1 先查询是否有这个相同的用户
@@ -24,15 +32,6 @@ def register():
             "errno": 1001,
             "errmsg": "已经注册..."
         })
-
-    # 验证图片验证码是否正确
-    # print(session.get("image_code").lower(),image_code.lower())
-    if session.get("image_code").lower() != image_code.lower():
-        ret = {
-            "errno": 1003,
-            "errmsg": "重新输入验证码"
-        }
-        return jsonify(ret)
 
     # 2.2 注册用户
     # 将新用户的数据插入到数据库
@@ -79,7 +78,6 @@ def login():
 
         session['user_id'] = user.id
         session['nick_name'] = mobile
-
     else:
         ret = {
             "errno": 2001,
@@ -102,14 +100,15 @@ def image_code():
     # 读取一个图片
     # with open("./yanzhengma.png", "rb") as f:
     #     image = f.read()
-    # 真正的生成一张验证码
+
+    # 真正的生成一张图片数据
     from utils.captcha.captcha import captcha
 
     # 生成验证码
     # hash值  验证码值  图片内容
     name, text, image = captcha.generate_captcha()
 
-    print("刚刚生成的验证码:", text)
+    print("刚刚生成的验证码：", text)
 
     # 通过session的方式，缓存刚刚生成的验证码，否则注册时不知道刚刚生成的是多少
     session['image_code'] = text
