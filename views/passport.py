@@ -17,7 +17,7 @@ def register():
     # 2. 测试数据
     print(mobile, password, image_code, smscode)
 
-    # 验证图片验证码是否争取
+    # 验证图片验证码是否正确
     if image_code.lower() != session['image_code'].lower():
         ret = {
             "errno": 1003,
