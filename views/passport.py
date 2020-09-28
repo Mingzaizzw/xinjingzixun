@@ -18,7 +18,7 @@ def register():
     print(mobile, password, image_code, smscode)
 
     # 验证图片验证码是否正确
-    if image_code.lower() != session['image_code'].lower():
+    if image_code.lower() != session['image_code'].lower():  # 验证码不区分大小写
         ret = {
             "errno": 1003,
             "errmsg": "重新输入验证码"
