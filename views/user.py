@@ -1,4 +1,5 @@
-from flask import jsonify, session, request
+from flask import jsonify, session, request, render_template
+
 
 from models import db
 from models.index import User, Follow
@@ -76,3 +77,13 @@ def follow():
             }
 
             return jsonify(ret)
+
+
+@user_blu.route("/user/center")
+def user_center():
+    return render_template("user.html")
+
+
+@user_blu.route("/user/user_base_info.html")
+def user_base_info():
+    return render_template("user_base_info.html")
