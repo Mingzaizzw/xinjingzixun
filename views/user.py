@@ -216,3 +216,16 @@ def user_avatar():
         }
 
     return jsonify(ret)
+
+
+@user_blu.route("/user/user_follow.html")
+def user_follow():
+    # 获取当前需要展示的页数
+    page = int(request.args.get("page", 1))
+
+    user_id = session.get("user_id")
+    user = db.session.query(User).filter(User.id == user_id).first()
+
+    paginate = user.followers.paginate(page, 2, False)
+
+    return render_template("user_follow.html", paginate=paginate)
