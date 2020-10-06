@@ -51,13 +51,18 @@ class Category(db.Model):
 
 
 # 因为User表中用到了Follw，所以就放到前面
-
-
 class Follow(db.Model):
     """用关注表"""
     __tablename__ = "follow"
     followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)  # 被关注人的id
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)  # 被粉丝id
+
+
+class Collection(db.Model):
+    __tablename__ = "collection"
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)  # 新闻编号
+    news_id = db.Column(db.Integer, db.ForeignKey("news.id"), primary_key=True)  # 分类编号
+    create_time = db.Column(db.DateTime, default=datetime.now)  # 收藏创建时间
 
 
 class User(db.Model):
@@ -80,10 +85,14 @@ class User(db.Model):
         ),
         default="MAN"
     )
-
     followers = db.relationship('User',
                                 secondary=Follow.__tablename__,
                                 primaryjoin=(id == Follow.followed_id),
                                 secondaryjoin=(id == Follow.follower_id),
                                 backref=db.backref('followed', lazy='dynamic'),
                                 lazy='dynamic')
+
+    collection_news = db.relationship("News",
+                                      secondary=Collection.__table__,
+                                      backref=db.backref('collected_user', lazy='dynamic'),
+                                      lazy='dynamic')
