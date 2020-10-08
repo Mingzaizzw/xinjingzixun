@@ -4,7 +4,7 @@ import time
 from flask import jsonify, session, request, render_template, redirect, url_for
 
 from models import db
-from models.index import User, Follow
+from models.index import User, Follow, Category, News
 from utils.image_qiniu import upload_image_to_qiniu
 from . import user_blu
 
@@ -66,7 +66,7 @@ def follow():
             db.session.commit()
 
             ret = {
-                "error": 0,
+                "errno": 0,
                 "errmsg": "取消关注成功"
             }
 
@@ -75,7 +75,7 @@ def follow():
         except Exception as ret:
             db.session.rollback()
             ret = {
-                "error": 3004,
+                "errno": 3004,
                 "errmsg": "取消关注失败..."
             }
 
@@ -164,6 +164,7 @@ def user_password():
             "errno": 0,
             "errmsg": "修改成功"
         }
+        session.clear()
 
     else:
         ret = {
@@ -211,7 +212,7 @@ def user_avatar():
 
         ret = {
             "errno": 0,
-            "errmsg": "成功"
+            "avatar_url": user.avatar_url
         }
     else:
         ret = {
@@ -245,3 +246,66 @@ def user_collection():
     # 查询用户收藏的文章
     paginate = user.collection_news.paginate(page, 1, False)
     return render_template("user_collection.html", paginate=paginate)
+
+
+@user_blu.route("/user/user_news_release.html")
+def user_news_release():
+    category_list = db.session.query(Category).filter(Category.id != 1).all()
+    return render_template("user_news_release.html", category_list=category_list)
+
+
+@user_blu.route("/user/release", methods=["POST"])
+def new_release():
+    title = request.form.get("title")
+    category = request.form.get("category")
+    digest = request.form.get("digest")
+    content = request.form.get("content")
+    f = request.files.get("index_image")
+
+    print(title, category, digest, content, f)
+
+    news = News()
+    news.title = title
+    news.category_id = category
+    news.source = "个人发布"
+    news.digest = digest
+    news.content = content
+    news.user_id = session.get("user_id")
+    news.status = 1  # 1代表 正在审核
+
+    if f:
+        file_hash = hashlib.md5()
+        file_hash.update((f.filename + time.ctime()).encode("utf-8"))
+        file_name = file_hash.hexdigest() + f.filename[f.filename.rfind("."):]
+
+        # 将路径改为static/upload下
+        path_file_name = "./static/upload/" + file_name
+
+        # 用新的随机的名字当做图片的名字
+        f.save(path_file_name)
+
+        # 将这个图片上传到七牛云
+        qiniu_image_url = upload_image_to_qiniu(path_file_name, file_name)
+        news.index_image_url = qiniu_image_url
+
+    db.session.add(news)
+    db.session.commit()
+
+    ret = {
+        "errno": 0,
+        "errmsg": "成功"
+    }
+
+    return jsonify(ret)
+
+
+@user_blu.route("/user/user_news_list.html")
+def user_news_list():
+    # 提取页码
+    page = int(request.args.get("page", 1))
+    # 查询当前用户
+    user_id = session.get("user_id")
+    user = db.session.query(User).filter(User.id == user_id).first()
+    # 获取当前用户的所有新闻
+    news_paginate = user.news.paginate(page, 1, False)
+    return render_template("user_news_list.html", news_paginate=news_paginate)

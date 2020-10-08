@@ -30,10 +30,10 @@ def category_news():
     # 2. 到数据库中查询数据
     # 如果cid是0，表示要看最新的，如果不是0则按照原来规则查询
     if cid == 0:
-        paginate = db.session.query(News).order_by(-News.clicks).paginate(page=int(page), per_page=int(per_page), error_out=False)
+        paginate = db.session.query(News).filter(News.status == 0).order_by(-News.create_time).paginate(page=int(page), per_page=int(per_page), error_out=False)
     else:
         cid += 1  # 由于测试数据分类中从0开始，而数据库中是从1开始的，所以用户点击的1实际上是2
-        paginate = db.session.query(News).filter(News.category_id == cid).paginate(page=int(page), per_page=int(per_page), error_out=False)
+        paginate = db.session.query(News).filter(News.category_id == cid, News.status == 0).order_by(-News.create_time).paginate(page=int(page), per_page=int(per_page), error_out=False)
 
     # 3. 准备好要返回给浏览器的数据
     ret = {
@@ -49,6 +49,9 @@ def category_news():
 def detail(news_id):
     # 根据news_id查询这个新闻的详情
     news = db.session.query(News).filter(News.id == news_id).first()
+
+    #查询点击量最多的6个新闻信息
+    click_detail_news_sex = db.session.query(News).order_by(-News.clicks).limit(6)
 
     # 查询这个新闻的作者
     news_author = news.user
@@ -73,4 +76,4 @@ def detail(news_id):
     else:
         news.can_collect = True  # 可以收藏
 
-    return render_template("detail.html", news=news, nick_name=nick_name, news_author=news_author)
+    return render_template("detail.html", news=news, nick_name=nick_name, news_author=news_author,click_detail_news_sex=click_detail_news_sex)

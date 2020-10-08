@@ -12,10 +12,11 @@ secret_key = 'edWBs5jLhCS88u4ax07y3gZLZR8roiHvlZp2eA2m'
 q = Auth(access_key, secret_key)
 
 # 要上传的空间
-bucket_name = 'xinjingzixunwenyiming'
+bucket_name = 'xinjinzixunwenyiming'
 
 # url前缀
-url_prefix = "http://qhrdxyp7w.hn-bkt.clouddn.com"
+url_prefix = "http://qhrdxyp7w.hn-bkt.clouddn.com/"
+
 
 def upload_image_to_qiniu(localfile, key):
     """
