@@ -27,8 +27,9 @@ $(function () {
                     // 设置父窗口中用户头像img的src属性
                     $(".user_center_pic>img", parent.document).attr("src", avatar_url);
                     $(".user_login>img", parent.document).attr("src", avatar_url);
-                }
-                else {
+                    // 刷新窗口.
+                    location.reload();
+                } else {
                     // `上传头像`失败
                     alert(resp.errmsg);
                 }
