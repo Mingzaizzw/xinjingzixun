@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, request, session
 
 from models import db
-from models.index import News
+from models.index import News, Comment, User
 
 from . import index_blu
 
@@ -15,7 +15,7 @@ def index():
     user_id = session.get("user_id", 0)
     nick_name = session.get("nick_name", "")
 
-    return render_template("index.html", clicks_top_6_news=clicks_top_6_news, nick_name=nick_name)
+    return render_template("index/index.html", clicks_top_6_news=clicks_top_6_news, nick_name=nick_name)
 
 
 @index_blu.route("/newslist")
@@ -76,4 +76,11 @@ def detail(news_id):
     else:
         news.can_collect = True  # 可以收藏
 
-    return render_template("detail.html", news=news, nick_name=nick_name, news_author=news_author,click_detail_news_sex=click_detail_news_sex)
+    # 获取评论
+    comments = news.comments.order_by(-Comment.create_time)
+
+    # 获取用户对象
+    user = db.session.query(User).filter(User.id == user_id).first()
+    like_comment = user.like_comment
+
+    return render_template("index/detail.html", news=news, nick_name=nick_name, news_author=news_author, click_detail_news_sex=click_detail_news_sex, comments=comments, like_comment=like_comment)
