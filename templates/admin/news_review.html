@@ -26,48 +26,114 @@
 					<th width="5%">状态</th>
 					<th width="8%">管理操作</th>
 				</tr>
-                {% for x in news %}
 				<tr>
-					<td>{{ x.get("id") }}</td>
-					<td class="tleft">{{ x.get("title") }}</td>
-					<td>{{ x.get("create_time") }}</td>
-                    {% if x.get("status") == 0 %}
+					<td>1</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
 					<td>已通过</td>
-                    {% elif x.get("status") == -1 %}
-                    <td>未通过</td>
-                    {% elif x.get("status") == 1 %}
-                    <td>未审核</td>
-                    {% endif %}
 					<td>
-						<a href="{{ url_for('.news_review_detail', news_id=x.get("id")) }}" class="review">审核</a>
+						<a href="news_review_detail.html" class="review">审核</a>
 					</td>
 				</tr>
-                {% endfor %}
+				<tr>
+					<td>2</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未通过</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未审核</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>已通过</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未通过</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>6</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未审核</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>7</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>已通过</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>8</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未通过</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>9</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未审核</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
+				<tr>
+					<td>10</td>
+					<td class="tleft">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</td>
+					<td>2018-3-5 21:39:05</td>
+					<td>未审核</td>
+					<td>
+						<a href="news_review_detail.html" class="review">审核</a>
+					</td>
+				</tr>
 			</table>
 		</div>
 
-        <div id="pagination" class="page">
-           <div class="ui-pagination-container">
+		<div class="box">
+			<div id="pagination" class="page"></div>
+		</div>
 
-               <a href="{{ url_for('.news_review') }}?page=1" class="ui-pagination-page-item" >首页</a>
-
-               {% if paginate.has_prev%}
-               <a href="{{ url_for('.news_review') }}?page={{ paginate.prev_num }}" class="ui-pagination-page-item" >上一页</a>
-               {% endif %}
-               {% for num in paginate.iter_pages() %}
-                   {% if num == paginate.page %}
-                    <a href="#" class="ui-pagination-page-item active" >{{ num }}</a>
-                   {% elif num %}
-                    <a href="{{ url_for('.news_review') }}?page={{ num }}" class="ui-pagination-page-item" >{{ num }}</a>
-                   {% endif %}
-
-               {% endfor %}
-                {% if paginate.has_next%}
-               <a href="{{ url_for('.news_review') }}?page={{ paginate.next_num }}" class="ui-pagination-page-item" >下一页</a>
-                {% endif %}
-               <a href="{{ url_for('.news_review') }}?page={{ paginate.pages }}" class="ui-pagination-page-item" >尾页</a>
-           </div>
-       </div>
+        <script>
+			$(function() {
+				$("#pagination").pagination({
+					currentPage: 2,
+					totalPage: 3,
+					callback: function(current) {
+					    alert('ok!');
+					}
+				});
+			});
+		</script>
 
 	
 </body>
