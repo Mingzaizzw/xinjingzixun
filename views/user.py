@@ -12,15 +12,18 @@ from . import user_blu
 @user_blu.route("/user/follow", methods=["POST"])
 def follow():
     action = request.json.get("action")
-
+    # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    # print(action)
     # 提取到if前面，以便在if或者else中都可以使用
     # 1. 提取当前作者的id
-    news_author_id = request.json.get("user_id")
+    news_author_id = int(request.json.get("user_id"))
 
     # 2. 提取当前登录用户的id
-    user_id = session.get("user_id")
+    user_id = int(session.get("user_id"))
 
     if action == "do":
+        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        # print("dodododoododoododo")
         # 实现关注的流程
         # 1. 提取当前作者的id
         # 2. 提取当前登录用户的id
@@ -58,15 +61,19 @@ def follow():
             return jsonify(ret)
 
     else:
+        # print("++++++++++++++++++++++++++++++++++++++++++++")
+        # print("ununununununununu")
         # 取消关注
 
         try:
-            follow = db.session.query(Follow).filter(Follow.followed_id == news_author_id, Follow.follower_id == user_id).first()
+            follow = db.session.query(Follow).filter(Follow.followed_id == news_author_id,
+                                                     Follow.follower_id == user_id).first()
+            print("已删除。。。。。。。。。。。。。。。。")
             db.session.delete(follow)
             db.session.commit()
 
             ret = {
-                "errno": 0,
+                "error": 0,
                 "errmsg": "取消关注成功"
             }
 
@@ -75,7 +82,7 @@ def follow():
         except Exception as ret:
             db.session.rollback()
             ret = {
-                "errno": 3004,
+                "error": 3004,
                 "errmsg": "取消关注失败..."
             }
 
