@@ -21,38 +21,77 @@
                     <th>注册时间</th>
                     <th>上次登录时间</th>
                 </tr>
-                {% for x in users %}
                 <tr>
-                    <td>{{ x.get("name") }}</td>
-                    <td>{{ x.get("mobile") }}</td>
-                    <td>{{ x.get("create_time") }}</td>
-                    <td>{{ x.get("last_login_time") }}</td>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
                 </tr>
-                {% endfor %}
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
+                <tr>
+                    <td>张大山</td>
+                    <td>13534888888</td>
+                    <td>2018-2-28 23:07:26</td>
+                    <td>2018-2-28 23:07:26</td>
+                </tr>
             </table>
         </div>
 
-       <div id="pagination" class="page">
-           <div class="ui-pagination-container">
+        <div class="box">
+            <div id="pagination" class="page"></div>
+        </div>
 
-               <a href="{{ url_for('.user_list') }}?page=1" class="ui-pagination-page-item" >首页</a>
-
-               {% if paginate.has_prev%}
-               <a href="{{ url_for('.user_list') }}?page={{ paginate.prev_num }}" class="ui-pagination-page-item" >上一页</a>
-               {% endif %}
-               {% for num in paginate.iter_pages() %}
-                   {% if num == paginate.page %}
-                    <a href="#" class="ui-pagination-page-item active" >{{ num }}</a>
-                   {% elif num %}
-                    <a href="{{ url_for('.user_list') }}?page={{ num }}" class="ui-pagination-page-item" >{{ num }}</a>
-                   {% endif %}
-
-               {% endfor %}
-                {% if paginate.has_next%}
-               <a href="{{ url_for('.user_list') }}?page={{ paginate.next_num }}" class="ui-pagination-page-item" >下一页</a>
-                {% endif %}
-               <a href="{{ url_for('.user_list') }}?page={{ paginate.pages }}" class="ui-pagination-page-item" >尾页</a>
-           </div>
-       </div>
+        <script>
+            $(function() {
+                $("#pagination").pagination({
+                    currentPage: 2,
+                    totalPage: 3,
+                    callback: function(current) {
+                        alert('ok!');
+                    }
+                });
+            });
+        </script>
 </body>
 </html>
