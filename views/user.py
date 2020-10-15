@@ -9,7 +9,7 @@ from utils.image_qiniu import upload_image_to_qiniu
 from . import user_blu
 
 
-@user_blu.route("/user/follow", methods=["POST"])
+@user_blu.route("/follow", methods=["POST"])
 def follow():
     action = request.json.get("action")
     # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -89,7 +89,7 @@ def follow():
             return jsonify(ret)
 
 
-@user_blu.route("/user/center")
+@user_blu.route("/center")
 def user_center():
     user_id = session.get("user_id")
     user = db.session.query(User).filter(User.id == user_id).first()
@@ -102,12 +102,12 @@ def user_center():
     return render_template("index/user.html", nick_name=nick_name, user=user)
 
 
-@user_blu.route("/user/user_base_info")
+@user_blu.route("/user_base_info")
 def user_base_info():
     return render_template("index/user_base_info.html")
 
 
-@user_blu.route("/user/basic", methods=["POST"])
+@user_blu.route("/basic", methods=["POST"])
 def user_basic():
     # 获取用户的新的信息
     nick_name = request.json.get("nick_name")
@@ -141,12 +141,12 @@ def user_basic():
     return jsonify(ret)
 
 
-@user_blu.route("/user/user_pass_info")
+@user_blu.route("/user_pass_info")
 def user_pass_info():
     return render_template("index/user_pass_info.html")
 
 
-@user_blu.route("/user/password", methods=["POST"])
+@user_blu.route("/password", methods=["POST"])
 def user_password():
     # 1. 提取旧密码以及新密码
     new_password = request.json.get("new_password")
@@ -183,14 +183,14 @@ def user_password():
     return jsonify(ret)
 
 
-@user_blu.route("/user/user_pic_info.html")
+@user_blu.route("/user_pic_info.html")
 def user_pic_info():
     user_id = session.get("user_id")
     user = db.session.query(User).filter(User.id == user_id).first()
     return render_template("index/user_pic_info.html", user=user)
 
 
-@user_blu.route("/user/avatar", methods=["POST"])
+@user_blu.route("/avatar", methods=["POST"])
 def user_avatar():
     f = request.files.get("avatar")
     if f:
@@ -230,7 +230,7 @@ def user_avatar():
     return jsonify(ret)
 
 
-@user_blu.route("/user/user_follow.html")
+@user_blu.route("/user_follow.html")
 def user_follow():
     # 获取当前需要展示的页数
     page = int(request.args.get("page", 1))
@@ -243,7 +243,7 @@ def user_follow():
     return render_template("index/user_follow.html", paginate=paginate)
 
 
-@user_blu.route("/user/user_collection.html")
+@user_blu.route("/user_collection.html")
 def user_collection():
     # 获取页码
     page = int(request.args.get("page", 1))
@@ -255,13 +255,13 @@ def user_collection():
     return render_template("index/user_collection.html", paginate=paginate)
 
 
-@user_blu.route("/user/user_news_release.html")
+@user_blu.route("/user_news_release.html")
 def user_news_release():
     category_list = db.session.query(Category).filter(Category.id != 1).all()
     return render_template("index/user_news_release.html", category_list=category_list)
 
 
-@user_blu.route("/user/release", methods=["POST"])
+@user_blu.route("/release", methods=["POST"])
 def new_release():
     title = request.form.get("title")
     category = request.form.get("category")
@@ -306,7 +306,7 @@ def new_release():
     return jsonify(ret)
 
 
-@user_blu.route("/user/user_news_list.html")
+@user_blu.route("/user_news_list.html")
 def user_news_list():
     # 提取页码
     page = int(request.args.get("page", 1))
